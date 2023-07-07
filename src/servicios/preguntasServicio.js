@@ -1,8 +1,8 @@
 import mssql from "mssql";
 import config from "../db";
 
-const crearPregunta = () => {
-    const conn = mssql.connect(config);
+export const crearPregunta = async(pregunta) => {
+    const conn = await mssql.connect(config);
     const query = `INSERT INTO [dbo].[Preguntas]
     ([Pregunta]
     ,[Opcion1]
@@ -10,8 +10,7 @@ const crearPregunta = () => {
     ,[Opcion3]
     ,[Opcion4]
     ,[RespuestaCorrecta]
-    ,[FechaCreacion]
-    ,[Id])
+    ,[FechaCreacion])
 VALUES
     (@Pregunta
     ,@Opcion1
@@ -19,12 +18,21 @@ VALUES
     ,@Opcion3
     ,@Opcion4
     ,@RespuestaCorrecta
-    ,@FechaCreacion
-    ,@Id)`
-}
+    ,@FechaCreacion)`
+    const results = await conn.request()
+    .input ("Pregunta", mssql.VarChar, pregunta.pregunta)
+    .input ("Opcion1", mssql.VarChar, pregunta.pregunta)
+    .input ("Opcion2", mssql.VarChar, pregunta.pregunta)
+    .input ("Opcion3", mssql.VarChar, pregunta.pregunta)
+    .input ("Opcion4", mssql.VarChar, pregunta.pregunta)
+    .input ("RespeustaCorrecta", mssql.VarChar, pregunta.pregunta)
+    .input ("FechaCreacion", mssql.Date, pregunta.pregunta)
+    .query(query);
+} 
 
-const actualizasPregunta = () => {
-    const conn = mssql.connect(config);
+
+export const actualizasPregunta = async() => {
+    const conn = await mssql.connect(config);
     const query = `UPDATE [dbo].[Preguntas]
     SET [Pregunta] = @Pregunta,
        ,[Opcion1] = @Opcion1
@@ -37,20 +45,20 @@ const actualizasPregunta = () => {
   WHERE <Search Conditions,,>`
 }
 
-const eliminarPregunta = () => {
-    const conn = mssql.connect(config);
+export const eliminarPregunta = async(id) => {
+    const conn =await mssql.connect(config);
     const query = `DELETE FROM [dbo].[Preguntas]
     WHERE <Search Conditions,,>`
 }
 
-const azarPregunta = () => {
-    const conn = mssql.connect(config);
+export const azarPregunta = async() => {
+    const conn = await mssql.connect(config);
     const query = `SELECT * FROM Preguntas
     ORDER BY NewId()`
 }
 
-const todasLasPregunta = () => {
-    const conn = mssql.connect(config);
+export const todasLasPregunta = async() => {
+    const conn = await mssql.connect(config);
     const query = `SELECT [Pregunta]
     ,@Opcion1
     ,@Opcion2
