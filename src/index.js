@@ -1,5 +1,5 @@
 import  Express  from "express";
-import { todasLasPregunta, azarPregunta, crearPregunta} from './servicios/preguntasServicio.js';
+import { todasLasPregunta, azarPregunta, crearPregunta, eliminarPregunta} from './servicios/preguntasServicio.js';
 import { crearRespuesta } from './servicios/respuestasServicio.js';
 
 const app = Express();
@@ -15,6 +15,12 @@ app.get("/preguntasAzar", async (req, res) => {
     const randomPreguntas = await azarPregunta();
     res.status(200).json(randomPreguntas);
 });
+
+app.delete('/preguntas', async (req, res) => {
+    const id = req.body.id
+    const preguntaEliminada = await eliminarPregunta(id);
+    return res.status(200).json(preguntaEliminada)
+})
 
 app.post("/respuestas", async (req, res) => {
     const respuestaCreada = await crearRespuesta(req.body);

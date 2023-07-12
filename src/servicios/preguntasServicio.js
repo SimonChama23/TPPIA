@@ -25,7 +25,7 @@ VALUES
     .input ("Opcion2", mssql.VarChar, pregunta.Opcion2)
     .input ("Opcion3", mssql.VarChar, pregunta.Opcion3)
     .input ("Opcion4", mssql.VarChar, pregunta.Opcion4)
-    .input ("RespeustaCorrecta", mssql.VarChar, pregunta.RespuestaCorrecta)
+    .input ("RespuestaCorrecta", mssql.VarChar, pregunta.RespuestaCorrecta)
     .input ("FechaCreacion", mssql.Date, new Date())
     .query(query);
 
@@ -50,7 +50,11 @@ export const actualizasPregunta = async() => {
 export const eliminarPregunta = async(id) => {
     const conn =await mssql.connect(config);
     const query = `DELETE FROM [dbo].[Preguntas]
-    WHERE <Search Conditions,,>`
+    WHERE Id = @Id`
+
+    const eliminarPregunta = await conn.request().input ("Id", mssql.Int, id).query(query);
+    return eliminarPregunta.rowsAffected[0];
+
 }
 
 export const azarPregunta = async() => {

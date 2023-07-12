@@ -18,10 +18,10 @@ VALUES
 
     const results = await conn.request()
     .input ("UserId", mssql.Int, respuesta.userId)
-    .input ("RespuestaSeleccionada", mssql.VarChar, respuesta.respuesta)
-    .input ("EsRespuestaCorrecta", mssql.Bit, respuesta.respuesta)
+    .input ("RespuestaSeleccionada", mssql.VarChar, respuesta.RespuestaSeleccionada)
+    .input ("EsRespuestaCorrecta", mssql.Bit, respuesta.EsRespuestaCorrecta)
     .input ("FechaCreacion", mssql.Date, new Date())
-    .input ("IdPregunta", mssql.Int, respuesta.respuesta)
+    .input ("IdPregunta", mssql.Int, respuesta.IdPregunta)
     .query(query);
 
     return results.rowsAffected[0];
