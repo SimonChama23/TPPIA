@@ -3,7 +3,7 @@ import config from "../db.js";
 import { getById } from "./preguntasServicio.js";
 
 export const crearRespuesta = async(respuesta) => {
-    const pregunta = getById(respuesta.IdPreguntas)
+    const pregunta = await getById(respuesta.IdPreguntas)
     const conn = await mssql.connect(config);
     const query = `INSERT INTO [dbo].[Respuestas]
     ([UserId]
