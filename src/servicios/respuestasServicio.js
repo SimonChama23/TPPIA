@@ -8,20 +8,20 @@ export const crearRespuesta = async(respuesta) => {
     ,[RespuestaSeleccionada]
     ,[EsRespuestaCorrecta]
     ,[FechaCreacion]
-    ,[IdPregunta])
+    ,[IdPreguntas])
 VALUES
     (@UserId
     ,@RespuestaSeleccionada
     ,@EsRespuestaCorrecta
     ,@FechaCreacion
-    ,@IdPregunta)`
+    ,@IdPreguntas)`
 
     const results = await conn.request()
     .input ("UserId", mssql.Int, respuesta.userId)
     .input ("RespuestaSeleccionada", mssql.VarChar, respuesta.RespuestaSeleccionada)
     .input ("EsRespuestaCorrecta", mssql.Bit, respuesta.EsRespuestaCorrecta)
     .input ("FechaCreacion", mssql.Date, new Date())
-    .input ("IdPregunta", mssql.Int, respuesta.IdPregunta)
+    .input ("IdPreguntas", mssql.Int, respuesta.IdPreguntas)
     .query(query);
 
     return results.rowsAffected[0];

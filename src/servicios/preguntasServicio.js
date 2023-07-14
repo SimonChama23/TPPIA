@@ -33,7 +33,7 @@ VALUES
 } 
 
 
-export const actualizasPregunta = async() => {
+export const actualizarPregunta = async() => {
     const conn = await mssql.connect(config);
     const query = `UPDATE [dbo].[Preguntas]
     SET [Pregunta] = @Pregunta,
@@ -42,9 +42,17 @@ export const actualizasPregunta = async() => {
        ,[Opcion3] = @Opcion3
        ,[Opcion4] = @Opcion4
        ,[RespuestaCorrecta] = @RespuestaCorrecta
-       ,[FechaCreacion] = @FechaCreacion
-       ,[Id] = @Id
-  WHERE <Search Conditions,,>`
+  WHERE Id= @Id`
+  const results = await conn.request()
+  .input ("Pregunta", mssql.VarChar, pregunta.pregunta)
+  .input ("Opcion1", mssql.VarChar, pregunta.Opcion1)
+  .input ("Opcion2", mssql.VarChar, pregunta.Opcion2)
+  .input ("Opcion3", mssql.VarChar, pregunta.Opcion3)
+  .input ("Opcion4", mssql.VarChar, pregunta.Opcion4)
+  .input ("Id", mssql.Int, pregunta.id)
+  .query(query);
+
+    return results.rowsAffected[0];
 }
 
 export const eliminarPregunta = async(id) => {
