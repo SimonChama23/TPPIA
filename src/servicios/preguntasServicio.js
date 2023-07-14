@@ -20,7 +20,7 @@ VALUES
     ,@RespuestaCorrecta
     ,@FechaCreacion)`
     const results = await conn.request()
-    .input ("Pregunta", mssql.VarChar, pregunta.pregunta)
+    .input ("Pregunta", mssql.VarChar, pregunta.Pregunta)
     .input ("Opcion1", mssql.VarChar, pregunta.Opcion1)
     .input ("Opcion2", mssql.VarChar, pregunta.Opcion2)
     .input ("Opcion3", mssql.VarChar, pregunta.Opcion3)
@@ -33,10 +33,10 @@ VALUES
 } 
 
 
-export const actualizarPregunta = async() => {
+export const actualizarPregunta = async(pregunta) => {
     const conn = await mssql.connect(config);
     const query = `UPDATE [dbo].[Preguntas]
-    SET [Pregunta] = @Pregunta,
+    SET [Pregunta] = @Pregunta
        ,[Opcion1] = @Opcion1
        ,[Opcion2] = @Opcion2
        ,[Opcion3] = @Opcion3
@@ -44,12 +44,13 @@ export const actualizarPregunta = async() => {
        ,[RespuestaCorrecta] = @RespuestaCorrecta
   WHERE Id= @Id`
   const results = await conn.request()
-  .input ("Pregunta", mssql.VarChar, pregunta.pregunta)
+  .input ("Pregunta", mssql.VarChar, pregunta.Pregunta)
   .input ("Opcion1", mssql.VarChar, pregunta.Opcion1)
   .input ("Opcion2", mssql.VarChar, pregunta.Opcion2)
   .input ("Opcion3", mssql.VarChar, pregunta.Opcion3)
   .input ("Opcion4", mssql.VarChar, pregunta.Opcion4)
-  .input ("Id", mssql.Int, pregunta.id)
+  .input ("RespuestaCorrecta", mssql.VarChar, pregunta.RespuestaCorrecta)
+  .input ("Id", mssql.Int, pregunta.Id)
   .query(query);
 
     return results.rowsAffected[0];
@@ -87,4 +88,13 @@ export const todasLasPregunta = async() => {
 FROM [dbo].[Preguntas]`
     const resultados = await conn.request().query(query);
     return resultados.recordset;
+}
+
+export const getById = async(id) => {
+    const conn = await mssql.connect(config);
+    const query = `SELECT * FROM Preguntas
+    WHERE Id = @Id`
+
+    const resultadosAzar = await conn.request().input("Id", mssql.Int, id).query(query);
+    return resultadosAzar.recordset[0];
 }
